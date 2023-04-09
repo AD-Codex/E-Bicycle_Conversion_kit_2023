@@ -13,10 +13,15 @@ while(1):
 	hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
 	# filter using color map
-	lower_blue = np.array([0, 100, 20])
-	upper_blue = np.array([179, 255, 255])
+	lower_red = np.array([0, 100, 20])
+	upper_red = np.array([179, 255, 255])
+	
+	# lower_blue = np.array([110, 50, 50])
+	# upper_blue = np.array([130, 255, 255])
 
-	mask = cv.inRange(hsv, lower_blue, upper_blue)
+	mask = cv.inRange(hsv, lower_red, upper_red)
+	mask = cv.erode(mask, None, iterations=10)
+	mask = cv.dilate(mask, None, iterations=10)
 
 	res = cv.bitwise_and( frame, frame, mask= mask)
 
@@ -30,3 +35,6 @@ while(1):
 
 
 cv.destroyAllWindows()
+
+print("End")
+
