@@ -22,7 +22,7 @@ while(1):
     mask = cv.erode( mask, None, iterations=10)
     mask = cv.dilate( mask, None, iterations=10)
 
-    # pixel of mask
+    # mask changes
     cnts = cv.findContours(mask.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
     center = None
