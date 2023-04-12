@@ -63,7 +63,7 @@ if __name__ == '__main__' :
                     # print(person[j])
 
 
-    cv.imshow("img_1", img_0, )
+    cv.imshow("img_1", img_0)
 
     cv.waitKey(0)
 
