@@ -1,127 +1,217 @@
-/*
-  more details https://lastminuteengineers.com/creating-esp32-web-server-arduino-ide/
-*/
 
 
 #include <WiFi.h>
 #include <WebServer.h>
+#include "WebPage.h"
 
-/* Put your SSID & Password */
-const char* ssid = "ESP32";  // Enter SSID here
-const char* password = "12345678";  //Enter Password here
 
-/* Put IP Address details */
+#define AP_SSID "E_Bicycle"
+#define AP_PASS "012345678"
+
+
+// pot read
+int Plot_pin = 39;
+
+// Motor A
+int motor1Pin1 = 12; 
+int motor1Pin2 = 13; 
+int enable1Pin = 15;
+
+// Encorder
+int Enco_pin = 16;
+
+// Setting Encorder
+int rotation = 0;
+int state = 0;
+
+// Setting PWM properties
+const int freq = 30000;
+const int pwmChannel = 0;
+const int resolution = 8;
+int dutyCycle = 0;
+int NotMapDutyCycle;
+
+// Speed count in feeed back
+int interval = 2;
+volatile unsigned int count = 0;
+unsigned int prevCount = 0;
+unsigned long prevTime = 0;
+
+// PID controller
+double kp = 1.0;           // Proportional gain
+double ki = 0.0;           // Integral gain
+double kd = 0.0;           // Derivative gain
+
+// pot readings
+int pot_val;
+uint32_t SensorUpdate = 0;
+int BitsA0 = 0, BitsA1 = 0;
+float VoltsA0 = 0, VoltsA1 = 0;
+
+// server values
+char XML[2048];
+char buf[32];
+
+
+
+/* IP Address details */
+IPAddress Actual_IP;
+
 IPAddress local_ip(192,168,1,1);
 IPAddress gateway(192,168,1,1);
 IPAddress subnet(255,255,255,0);
+IPAddress ip;
 
 WebServer server(80);
 
-uint8_t LED1pin = 2;
-bool LED1status = LOW;
-
-uint8_t LED2pin = 13;
-bool LED2status = LOW;
 
 void setup() {
   Serial.begin(115200);
 
+  pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(enable1Pin, OUTPUT);
 
-  pinMode(LED1pin, OUTPUT);
-  pinMode(LED2pin, OUTPUT);
+  pinMode(Plot_pin, INPUT);
+  pinMode(Enco_pin, INPUT);
 
-  WiFi.softAP(ssid, password);
-  WiFi.softAPConfig(local_ip, gateway, subnet);
+  digitalWrite(motor1Pin1, HIGH);
+  digitalWrite(motor1Pin2, LOW);
+
+  // Configure LED PWM functionalitites
+  ledcSetup(pwmChannel, freq, resolution);
+  // Attach the channel to the GPIO to be controlled
+  ledcAttachPin(enable1Pin, pwmChannel);
+
+  disableCore0WDT();
+
+
+  Serial.println("starting server");
+  WiFi.softAP(AP_SSID, AP_PASS);
   delay(100);
-  
-  server.on("/", handle_OnConnect);
-  server.on("/led1on", handle_led1on);
-  server.on("/led1off", handle_led1off);
-  server.on("/led2on", handle_led2on);
-  server.on("/led2off", handle_led2off);
-  server.onNotFound(handle_NotFound);
+  WiFi.softAPConfig( local_ip, gateway, subnet);
+  delay(100);
+  Actual_IP = WiFi.softAPIP();
+  Serial.print("IP address: "); Serial.println(Actual_IP);
+
+  server.on("/", SendWebsite);
+  server.on("/xml", SendXML);
+  server.on("/UPDATE_SLIDER", UpdateSlider);
+  server.on("/BUTTON_0", ProcessButton_0);
+  server.on("/BUTTON_1", ProcessButton_1);
   
   server.begin();
   Serial.println("HTTP server started");
 }
 void loop() {
+
+  // Encorder count
+  if (state == 0 && digitalRead(Enco_pin) == 1) {
+    // Condition is true, so increment v and start the timer
+    count++;
+    //startTime = millis(); ========
+    state = 1;
+  } else {
+    // Condition is false, reset the state
+    state = 0;
+  }
+  
+  // Pot value reading
+  if ((millis() - SensorUpdate) >= 50) {
+    SensorUpdate = millis();
+    BitsA0 = analogRead(Plot_pin);
+    NotMapDutyCycle = BitsA0;
+    BitsA1 = BitsA0;
+
+    int S_value = map(pot_val, 0, 4095, 0, 40);
+    VoltsA0 = map(BitsA0, 0, 4095, 0, 40);
+    VoltsA1 = BitsA1 * 3.3 / 4096;
+
+    dutyCycle = map(NotMapDutyCycle, 0 ,4095 , 120, 255);
+  }
+  // Write the values on motor
+  ledcWrite(pwmChannel, dutyCycle);
+
+  Serial.print("sensor reading:");
+  Serial.println(count);
+
   server.handleClient();
-  if(LED1status) {digitalWrite(LED1pin, HIGH);}
-  else
-  {digitalWrite(LED1pin, LOW);}
+
+}
+void UpdateSlider() {
+  String t_state = server.arg("VALUE");
+  server.send(200, "text/plain", ""); //Send web page
+}
+
+
+void ProcessButton_0() {
+  Serial.println("Button 0 press");
+  server.send(200, "text/plain", ""); //Send web page
+}
+
+
+void ProcessButton_1() {
+  Serial.println("Button 1 press");
+  server.send(200, "text/plain", ""); //Send web page
+}
+
+
+void SendWebsite() {
+  Serial.println("sending web page");
+  // timeout that 200 ms
+  server.send(200, "text/html", PAGE_MAIN);
+}
+
+
+void SendXML() {
+
+  strcpy(XML, "<?xml version = '1.0'?>\n<Data>\n");
+
+  // send bitsA0
+  sprintf(buf, "<B0>%d</B0>\n", BitsA0);
+  strcat(XML, buf);
+  // send Volts0
+  sprintf(buf, "<V0>%d.%d</V0>\n", (int) (VoltsA0), abs((int) (VoltsA0 * 10)  - ((int) (VoltsA0) * 10)));
+  strcat(XML, buf);
+
+  // send bits1
+  sprintf(buf, "<B1>%d</B1>\n", BitsA1);
+  strcat(XML, buf);
+  // send Volts1
+  sprintf(buf, "<V1>%d.%d</V1>\n", (int) (VoltsA1), abs((int) (VoltsA1 * 10)  - ((int) (VoltsA1) * 10)));
+  strcat(XML, buf);
+
+  strcat(XML, "<LED>1</LED>\n");
+
+  strcat(XML, "<SWITCH>0</SWITCH>\n");
+
+  strcat(XML, "</Data>\n");
   
-  if(LED2status) {
-    digitalWrite(LED2pin, HIGH);
-  }
-  else {
-    digitalWrite(LED2pin, LOW);
-  }
+  // Serial.println(XML);
+
+  server.send(200, "text/xml", XML);
 }
 
-void handle_OnConnect() {
-  LED1status = LOW;
-  LED2status = LOW;
-  Serial.println("GPIO4 Status: OFF | GPIO5 Status: OFF");
-  server.send(200, "text/html", SendHTML(LED1status,LED2status)); 
-}
 
-void handle_led1on() {
-  LED1status = HIGH;
-  Serial.println("GPIO4 Status: ON");
-  server.send(200, "text/html", SendHTML(true,LED2status)); 
-}
+// void printWifiStatus() {
 
-void handle_led1off() {
-  LED1status = LOW;
-  Serial.println("GPIO4 Status: OFF");
-  server.send(200, "text/html", SendHTML(false,LED2status)); 
-}
+//   // print the SSID of the network you're attached to:
+//   Serial.print("SSID: ");
+//   Serial.println(WiFi.SSID());
 
-void handle_led2on() {
-  LED2status = HIGH;
-  Serial.println("GPIO5 Status: ON");
-  server.send(200, "text/html", SendHTML(LED1status,true)); 
-}
+//   // print your WiFi shield's IP address:
+//   ip = WiFi.localIP();
+//   Serial.print("IP Address: ");
+//   Serial.println(ip);
 
-void handle_led2off() {
-  LED2status = LOW;
-  Serial.println("GPIO5 Status: OFF");
-  server.send(200, "text/html", SendHTML(LED1status,false)); 
-}
+//   // print the received signal strength:
+//   long rssi = WiFi.RSSI();
+//   Serial.print("signal strength (RSSI):");
+//   Serial.print(rssi);
+//   Serial.println(" dBm");
+//   // print where to go in a browser:
+//   Serial.print("Open http://");
+//   Serial.println(ip);
+// }
 
-void handle_NotFound(){
-  server.send(404, "text/plain", "Not found");
-}
 
-String SendHTML(uint8_t led1stat,uint8_t led2stat){
-  String ptr = "<!DOCTYPE html> <html>\n";
-  ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
-  ptr +="<title>LED Control</title>\n";
-  ptr +="<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
-  ptr +="body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;} h3 {color: #444444;margin-bottom: 50px;}\n";
-  ptr +=".button {display: block;width: 80px;background-color: #3498db;border: none;color: white;padding: 13px 30px;text-decoration: none;font-size: 25px;margin: 0px auto 35px;cursor: pointer;border-radius: 4px;}\n";
-  ptr +=".button-on {background-color: #3498db;}\n";
-  ptr +=".button-on:active {background-color: #2980b9;}\n";
-  ptr +=".button-off {background-color: #34495e;}\n";
-  ptr +=".button-off:active {background-color: #2c3e50;}\n";
-  ptr +="p {font-size: 14px;color: #888;margin-bottom: 10px;}\n";
-  ptr +="</style>\n";
-  ptr +="</head>\n";
-  ptr +="<body>\n";
-  ptr +="<h1>ESP32 Web Server</h1>\n";
-  ptr +="<h3>Using Access Point(AP) Mode</h3>\n";
-  
-   if(led1stat)
-  {ptr +="<p>LED1 Status: ON</p><a class=\"button button-off\" href=\"/led1off\">OFF</a>\n";}
-  else
-  {ptr +="<p>LED1 Status: OFF</p><a class=\"button button-on\" href=\"/led1on\">ON</a>\n";}
-
-  if(led2stat)
-  {ptr +="<p>Image one</p><a class=\"button button-off\" href=\"/led2off\">1</a>\n";}
-  else
-  {ptr +="<p>Image two</p><a class=\"button button-on\" href=\"/led2on\">2</a>\n";}
-
-  ptr +="</body>\n";
-  ptr +="</html>\n";
-  return ptr;
-}
