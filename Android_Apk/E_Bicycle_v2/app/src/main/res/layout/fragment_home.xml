@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/constraintLayout7"
+        android:layout_width="165dp"
+        android:layout_height="200dp"
+        android:background="@drawable/soc_layer"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/textViewsoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Battery"
+            android:textColor="@color/black"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toTopOf="@+id/textSoc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.41" />
+
+        <TextView
+            android:id="@+id/textSoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="100%"
+            android:textColor="@color/black"
+            android:textSize="55sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout6"
+        android:layout_width="165dp"
+        android:layout_height="200dp"
+        android:background="@drawable/distance_layer"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/constraintLayout7"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/textViewDistance2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="km"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textDistance"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <TextView
+            android:id="@+id/textDistance"
+            android:layout_width="108dp"
+            android:layout_height="64dp"
+            android:text="00.0"
+            android:textColor="@color/black"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDistance2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDistance"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <TextView
+            android:id="@+id/textViewDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Distance"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/textDistance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout8"
+        android:layout_width="358dp"
+        android:layout_height="337dp"
+        android:background="@drawable/speed_layer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.043">
+
+        <TextView
+            android:id="@+id/textSpeed"
+            android:layout_width="292dp"
+            android:layout_height="164dp"
+            android:text="00.0"
+            android:textColor="@color/black"
+            android:textSize="149sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewSpeed2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.921"
+            tools:layout_conversion_absoluteHeight="20dp"
+            tools:layout_conversion_absoluteWidth="59dp" />
+
+        <TextView
+            android:id="@+id/textViewSpeed"
+            android:layout_width="176dp"
+            android:layout_height="102dp"
+            android:layout_marginTop="28dp"
+            android:text="Speed"
+            android:textColor="@color/black"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewSpeed2"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="24dp"
+            android:text="kmph"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:text="Electic Mode"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:text="Automatic Mode"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
