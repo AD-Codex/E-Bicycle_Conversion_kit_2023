@@ -1,4 +1,5 @@
-# Electric Bicycle Conversion kits with Autonomous Riding System
+# Electric Bike Conversion kits with Autonomous Braking System
 
 
-![Screenshot from 2023-06-17 22-27-29](https://github.com/AD-Codex/E_Bicycle_2023/assets/126350818/728221c3-99fa-4cf4-82cd-f7befcbdcba4)
+![20230728_093214](https://github.com/AD-Codex/E_Bicycle_2023/assets/126350818/851be430-0587-4c3c-9653-3fe7daef63b8)
+
