@@ -10,4 +10,4 @@
 1. UI v_2
 2. Bluetooth Classic
 3. Speed, Soc, Distance Data read
-4. Data write
+4. Object detection in riding path
