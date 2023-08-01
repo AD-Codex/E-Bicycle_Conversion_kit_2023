@@ -10,4 +10,11 @@
 1. UI v_2
 2. Bluetooth Classic
 3. Speed, Soc, Distance Data read
-4. Object detection in riding path
+4. Unit controlling by apk
+
+# Version 3
+1. Electric Mode
+2. Automatic Mode
+3. Bluetooth Classic
+4. Speed, Soc, Distance Data read
+5. Object detection in riding path
