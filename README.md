@@ -1,5 +1,7 @@
 # Electric Bike Conversion kits with Autonomous Braking System
 
+![Screenshot (133) copy](https://github.com/AD-Codex/E_Bicycle_2023/assets/126350818/78786dfc-d8b2-4ad0-adae-fcebccf3fabf)
+
 Video link - 
 
 ## Conversion kit
