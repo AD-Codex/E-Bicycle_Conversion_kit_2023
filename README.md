@@ -2,7 +2,7 @@
 
 ![Screenshot (133) copy](https://github.com/AD-Codex/E_Bicycle_2023/assets/126350818/78786dfc-d8b2-4ad0-adae-fcebccf3fabf)
 
-Video link - 
+Video link - https://youtu.be/RcWbwfUQJCY
 
 ## Conversion kit
 ![20230728_093214](https://github.com/AD-Codex/E_Bicycle_2023/assets/126350818/851be430-0587-4c3c-9653-3fe7daef63b8)
