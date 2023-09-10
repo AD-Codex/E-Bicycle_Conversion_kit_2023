@@ -15,11 +15,15 @@ Video link - https://youtu.be/RcWbwfUQJCY
 ## Object detection mode
 ![Screenshot_20230728-000134_E_Bicycle_v1](https://github.com/AD-Codex/E_Bicycle_2023/assets/126350818/8ff7961c-41ab-4aa1-8b66-2b720e53dbd3)
 
+
 ## Reference
 
 Android App
 1. https://www.youtube.com/watch?v=tv7vYYZ6At4
 2. https://www.tutlane.com/tutorial/android/android-switch-on-off-button-with-examples
+
+Android Cam
+1. https://www.youtube.com/watch?v=2NUo2Up8JIM
    
 Arduino Bluetooth
 1. https://www.thinker-talk.com/bluecard-part-6-controlling-the-arduino-nano-bluetooth-module-from-android-device
@@ -33,3 +37,10 @@ Android Bluetooth
 5. https://www.youtube.com/watch?v=wLRQ9EClYuA
 6. https://www.youtube.com/watch?v=YJ0JQXcNNTA
 
+Android OpenCV
+1. https://opencv.org/android/
+2. https://docs.opencv.org/3.4/javadoc/index.html
+3. https://medium.com/android-news/a-beginners-guide-to-setting-up-opencv-android-library-on-android-studio-19794e220f3c
+4. https://github.com/chuanqi305/MobileNet-SSD
+5. https://github.com/karolmajek/Mask_RCNN/tree/master
+6. https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md
