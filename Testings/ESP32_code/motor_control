@@ -1,0 +1,62 @@
+/*********
+  Group06
+  Complete project
+  Electrical Bicyle
+*********/
+
+// Motor A
+int motor1Pin1 = 12; 
+int motor1Pin2 = 13; 
+int enable1Pin = 15; 
+
+// Potentiometer
+int pot = 2;
+
+// Encorder
+int encorder = 0;
+
+// Setting PWM properties
+const int freq = 30000;
+const int pwmChannel = 0;
+const int resolution = 8;
+int dutyCycle = 0;
+int NotMapDutyCycle;
+
+void setup() {
+  // Attaching an Interrupt
+  //attachInterrupt(encorder, ISR, Mode);
+
+  // Sets the motor pins as outputs:
+  pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(enable1Pin, OUTPUT);
+  pinMode(pot, INPUT);
+  
+  // Configure LED PWM functionalitites
+  ledcSetup(pwmChannel, freq, resolution);
+  
+  // Attach the channel to the GPIO to be controlled
+  ledcAttachPin(enable1Pin, pwmChannel);
+
+  Serial.begin(115200);
+  // Testing
+  Serial.print("Testing DC Motor...");
+}
+
+
+void loop() {
+ 
+  // Move DC motor forward with increasing speed
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+
+  // Mapping the analog input to Output
+  NotMapDutyCycle = analogRead(pot);
+  dutyCycle = map(NotMapDutyCycle, 0 ,4095 , 120, 255);
+  
+  ledcWrite(pwmChannel, dutyCycle);   
+  Serial.print("Forward with duty cycle: ");
+  Serial.println(dutyCycle);
+  delay(500);
+  
+}
